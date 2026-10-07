@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FilmyFly - Movie Player</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#07080c;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+/* HEADER */
+
+.header{
+    height:65px;
+    padding:0 5%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#08090d;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    color:#fff;
+    text-decoration:none;
+    font-size:24px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#e50914;
+}
+
+.back{
+    color:#fff;
+    text-decoration:none;
+    background:#181a22;
+    padding:9px 15px;
+    border-radius:8px;
+    font-size:14px;
+}
+
+/* PLAYER */
+
+.player-section{
+    width:100%;
+    background:#000;
+}
+
+.video-wrapper{
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+    aspect-ratio:16/9;
+    background:#000;
+}
+
+video{
+    width:100%;
+    height:100%;
+    display:block;
+    background:#000;
+}
+
+/* CONTENT */
+
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:30px auto 100px;
+}
+
+.movie-title{
+    font-size:32px;
+    font-weight:800;
+    margin-bottom:12px;
+}
+
+.meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    color:#aaa;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+.rating{
+    color:#ffd34d;
+    font-weight:700;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-top:25px;
+}
+
+.info-box{
+    background:#11131a;
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:12px;
+    padding:18px;
+}
+
+.info-label{
+    color:#888;
+    font-size:12px;
+    text-transform:uppercase;
+    margin-bottom:8px;
+}
+
+.info-value{
+    font-size:16px;
+    font-weight:600;
+}
+
+.description{
+    margin-top:25px;
+    background:#11131a;
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:12px;
+    padding:20px;
+}
+
+.description h3{
+    margin-bottom:12px;
+}
+
+.description p{
+    color:#aeb0ba;
+    line-height:1.7;
+    font-size:14px;
+}
+
+/* BUTTONS */
+
+.actions{
+    display:flex;
+    gap:12px;
+    margin-top:25px;
+}
+
+.btn{
+    padding:12px 20px;
+    border:0;
+    border-radius:8px;
+    font-weight:700;
+    cursor:pointer;
+    color:#fff;
+}
+
+.primary{
+    background:#e50914;
+}
+
+.secondary{
+    background:#22242d;
+}
+
+/* RELATED */
+
+.related{
+    margin-top:40px;
+}
+
+.related h2{
+    margin-bottom:18px;
+}
+
+.related-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:15px;
+}
+
+.related-card{
+    background:#11131a;
+    border-radius:9px;
+    overflow:hidden;
+    cursor:pointer;
+}
+
+.related-card img{
+    width:100%;
+    aspect-ratio:2/3;
+    object-fit:cover;
+    display:block;
+}
+
+.related-card div{
+    padding:10px;
+    font-size:13px;
+    font-weight:600;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    .header{
+        padding:0 4%;
+    }
+
+    .logo{
+        font-size:21px;
+    }
+
+    .container{
+        width:92%;
+        margin-top:22px;
+    }
+
+    .movie-title{
+        font-size:25px;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .related-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+
+    .btn{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <a href="index.html" class="logo">
+        Filmy<span>Fly</span>
+    </a>
+
+    <a href="index.html" class="back">
+        ← Back
+    </a>
+
+</header>
+
+
+<!-- PLAYER -->
+
+<section class="player-section">
+
+    <div class="video-wrapper">
+
+        <video
+            id="moviePlayer"
+            controls
+            preload="metadata"
+            poster=""
+        >
+
+            <source
+                id="videoSource"
+                src=""
+                type="video/mp4"
+            >
+
+            Your browser does not support HTML5 video.
+
+        </video>
+
+    </div>
+
+</section>
+
+
+<!-- MOVIE DETAILS -->
+
+<main class="container">
+
+    <h1
+        class="movie-title"
+        id="movieName"
+    >
+        Movie Name
+    </h1>
+
+    <div class="meta">
+
+        <span id="movieYear">
+            2026
+        </span>
+
+        <span>•</span>
+
+        <span id="movieGenre">
+            Action
+        </span>
+
+        <span>•</span>
+
+        <span class="rating" id="movieRating">
+            ★ 8.5
+        </span>
+
+    </div>
+
+
+    <!-- ACTIONS -->
+
+    <div class="actions">
+
+        <button
+            class="btn primary"
+            onclick="playMovie()"
+        >
+            ▶ Play
+        </button>
+
+        <button
+            class="btn secondary"
+            onclick="addToWatchlist()"
+            id="watchlistBtn"
+        >
+            ♡ Add to Watchlist
+        </button>
+
+    </div>
+
+
+    <!-- ACTOR / ARTISTS -->
+
+    <div class="info-grid">
+
+        <div class="info-box">
+
+            <div class="info-label">
+                Actor
+            </div>
+
+            <div
+                class="info-value"
+                id="actorName"
+            >
+                Raj Kumar
+            </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <div class="info-label">
+                Artists
+            </div>
+
+            <div
+                class="info-value"
+                id="artists"
+            >
+                Priya Sharma, Amit Verma
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- DESCRIPTION -->
+
+    <div class="description">
+
+        <h3>
+            About This Movie
+        </h3>
+
+        <p id="descriptionText">
+            A thrilling cinematic journey filled with action,
+            emotion and unexpected twists. Watch this movie
+            in the FilmyFly player.
+        </p>
+
+    </div>
+
+
+    <!-- RELATED -->
+
+    <section class="related">
+
+        <h2>
+            More Like This
+        </h2>
+
+        <div
+            class="related-grid"
+            id="relatedMovies"
+        ></div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+/*
+========================================
+FILMYFLY MOVIE DATA
+========================================
+*/
+
+const movies = {
+
+    1:{
+        name:"The Last Horizon",
+        year:"2026",
+        genre:"Action",
+        rating:"8.7",
+        actor:"John Carter",
+        artists:"Emma Stone, Michael Lee",
+        description:
+        "A cinematic action adventure about a team fighting against impossible odds. Their journey takes them across dangerous locations where every decision could change their fate.",
+        poster:
+        "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1000&q=80",
+
+        video:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+
+    2:{
+        name:"Midnight Run",
+        year:"2026",
+        genre:"Thriller",
+        rating:"8.4",
+        actor:"Daniel Smith",
+        artists:"Sarah Jones, Alex Brown",
+        description:
+        "A dangerous night changes everything when a mysterious package appears. A race against time begins before sunrise.",
+        poster:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80",
+
+        video:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+    },
+
+    3:{
+        name:"City Lights",
+        year:"2025",
+        genre:"Drama",
+        rating:"8.2",
+        actor:"Arjun Mehta",
+        artists:"Riya Kapoor, Aman Shah",
+        description:
+        "A modern urban drama about dreams, relationships and second chances.",
+        poster:
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=80",
+
+        video:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+    },
+
+    4:{
+        name:"Shadow Force",
+        year:"2026",
+        genre:"Action",
+        rating:"8.8",
+        actor:"Chris Morgan",
+        artists:"Anna Williams, Mark Stone",
+        description:
+        "An elite team returns for one final mission. Failure is not an option.",
+        poster:
+        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=80",
+
+        video:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+    },
+
+    5:{
+        name:"Dream Street",
+        year:"2025",
+        genre:"Romance",
+        rating:"8.0",
+        actor:"Rahul Singh",
+        artists:"Neha Sharma, Karan Roy",
+        description:
+        "Two strangers discover an unexpected connection in a busy city.",
+        poster:
+        "https://images.unsplash.com/photo-1496337589254-7e19d01cec44?auto=format&fit=crop&w=1000&q=80",
+
+        video:
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+    }
+
+};
+
+
+/*
+========================================
+GET MOVIE ID FROM URL
+Example:
+player.html?id=1
+========================================
+*/
+
+const params =
+    new URLSearchParams(window.location.search);
+
+let movieId =
+    parseInt(params.get("id")) || 1;
+
+let movie =
+    movies[movieId] || movies[1];
+
+
+/*
+========================================
+LOAD MOVIE
+========================================
+*/
+
+function loadMovie(){
+
+    document.title =
+        "FilmyFly - " + movie.name;
+
+
+    document.getElementById("movieName")
+        .textContent = movie.name;
+
+
+    document.getElementById("movieYear")
+        .textContent = movie.year;
+
+
+    document.getElementById("movieGenre")
+        .textContent = movie.genre;
+
+
+    document.getElementById("movieRating")
+        .textContent = "★ " + movie.rating;
+
+
+    document.getElementById("actorName")
+        .textContent = movie.actor;
+
+
+    document.getElementById("artists")
+        .textContent = movie.artists;
+
+
+    document.getElementById("descriptionText")
+        .textContent = movie.description;
+
+
+    const player =
+        document.getElementById("moviePlayer");
+
+
+    player.poster =
+        movie.poster;
+
+
+    document.getElementById("videoSource")
+        .src = movie.video;
+
+
+    player.load();
+
+
+    loadRelatedMovies();
+
+}
+
+
+/*
+========================================
+PLAY MOVIE
+========================================
+*/
+
+function playMovie(){
+
+    const player =
+        document.getElementById("moviePlayer");
+
+    player.play()
+        .catch(()=>{
+            console.log(
+                "Browser requires user interaction."
+            );
+        });
+
+}
+
+
+/*
+========================================
+WATCHLIST
+========================================
+*/
+
+function addToWatchlist(){
+
+    let list =
+        JSON.parse(
+            localStorage.getItem(
+                "filmyfly_watchlist"
+            )
+        ) || [];
+
+
+    if(!list.includes(movieId)){
+
+        list.push(movieId);
+
+        localStorage.setItem(
+            "filmyfly_watchlist",
+            JSON.stringify(list)
+        );
+
+        document.getElementById("watchlistBtn")
+            .textContent =
+            "♥ Added to Watchlist";
+
+    }else{
+
+        list =
+            list.filter(id => id !== movieId);
+
+        localStorage.setItem(
+            "filmyfly_watchlist",
+            JSON.stringify(list)
+        );
+
+        document.getElementById("watchlistBtn")
+            .textContent =
+            "♡ Add to Watchlist";
+
+    }
+
+}
+
+
+/*
+========================================
+LOAD RELATED MOVIES
+========================================
+*/
+
+function loadRelatedMovies(){
+
+    const container =
+        document.getElementById("relatedMovies");
+
+    container.innerHTML = "";
+
+    Object.keys(movies)
+        .filter(id => parseInt(id) !== movieId)
+        .slice(0,5)
+        .forEach(id => {
+
+            const item =
+                movies[id];
+
+            container.innerHTML += `
+
+                <div
+                    class="related-card"
+                    onclick="
+                        window.location.href=
+                        'player.html?id=${id}'
+                    "
+                >
+
+                    <img
+                        src="${item.poster}"
+                        alt="${item.name}"
+                    >
+
+                    <div>
+                        ${item.name}
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+}
+
+
+/*
+========================================
+CHECK WATCHLIST STATUS
+========================================
+*/
+
+function checkWatchlist(){
+
+    const list =
+        JSON.parse(
+            localStorage.getItem(
+                "filmyfly_watchlist"
+            )
+        ) || [];
+
+
+    if(list.includes(movieId)){
+
+        document.getElementById(
+            "watchlistBtn"
+        ).textContent =
+            "♥ Added to Watchlist";
+
+    }
+
+}
+
+
+/*
+========================================
+INITIALIZE
+========================================
+*/
+
+loadMovie();
+checkWatchlist();
+
+</script>
+
+</body>
+</html>
